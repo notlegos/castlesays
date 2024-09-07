@@ -2,9 +2,6 @@ function digitsClear () {
     digits = Connected.tm1637Create(Connected.DigitalRJPin.J5)
     digits.clear()
 }
-function playSound (category: string) {
-	
-}
 function awaitPlayer () {
     radioSay("Intro", "30", true)
     Connected.showUserNumber(3, Connected.readColor())
@@ -88,10 +85,12 @@ function tryFinalRow (startPosition: string, minePosition: string) {
     return winner
 }
 function runIntro () {
-    radioSay("Intro", "0", true)
-    introLength = 123456
+    theIntro = notLegos.getSoundString("Music", "Intro")
+    introLength = parseFloat(theIntro.split("_")[3]) * 1000
     radioSay("Intro", convertToText(introLength), true)
-    basic.pause(introLength)
+    basic.pause(notLegos.playsFor(theIntro))
+    radioSay("Intro", "0", true)
+    basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "0")))
     radioSay("Intro", "1", true)
     basic.pause(400)
     if (checkNoPlayer()) {
@@ -597,7 +596,8 @@ Connected.onGesture(Connected.GestureType.Down, function () {
     gestureGo()
 })
 function checkNoPlayer () {
-    return true
+    Connected.showUserNumber(3, Connected.readColor())
+    return isNearly(backgroundColor, Math.round(Connected.readColor()), 3)
 }
 let lastRead = 0
 let thisRead = 0
@@ -634,6 +634,7 @@ let awaitingStep = false
 let passed = false
 let firstRun = false
 let introLength = 0
+let theIntro = ""
 let winner = false
 let laserBreaks2: boolean[] = []
 let endCountdown = 0
@@ -645,6 +646,7 @@ let readyInstructions = false
 let thisColor = 0
 let excelString = ""
 let digits: Connected.TM1637LEDs = null
+let backgroundColor = 0
 let colorReads: number[] = []
 let scoreCircle: Connected.Strip = null
 let theYellow = 0
@@ -654,12 +656,20 @@ let limitL = 0
 let limitR = 0
 let limitC = 0
 let btToken = ""
+led.enable(false)
+pins.setAudioPinEnabled(false)
+pins.digitalWritePin(DigitalPin.P5, 0)
+Connected.MP3SetPort(Connected.DigitalRJPin.P14)
+Connected.execute(Connected.playType.Stop)
+Connected.MP3SetPort(Connected.DigitalRJPin.P15)
+Connected.execute(Connected.playType.Stop)
+Connected.MP3SetPort(Connected.DigitalRJPin.P16)
+Connected.execute(Connected.playType.Stop)
 let isReady = false
 let buttonBlock = false
 let introRunning = false
 let fieldIndex2 = 0
 let theSeries = ""
-let explosionSFX: number[] = []
 let soundToPlay = ""
 let relativeVolumeA = 0
 let musicToPlay = ""
@@ -673,19 +683,11 @@ let minefields: number[] = []
 let thePotSays = 0
 let masterAvoidList: number[] = []
 let listOut: number[] = []
-Connected.MP3SetPort(Connected.DigitalRJPin.P14)
-Connected.execute(Connected.playType.Stop)
-Connected.MP3SetPort(Connected.DigitalRJPin.P15)
-Connected.execute(Connected.playType.Stop)
-Connected.MP3SetPort(Connected.DigitalRJPin.P16)
-Connected.execute(Connected.playType.Stop)
 notLegos.potSet(AnalogPin.P10)
 notLegos.mp3setPorts(SerialPin.P14)
 notLegos.mp3setPorts(SerialPin.P15)
 notLegos.mp3setPorts(SerialPin.P16)
 notLegos.setSounds("Mario")
-led.enable(false)
-pins.setAudioPinEnabled(false)
 btToken = "KC$"
 limitC = 70
 limitR = 80
@@ -701,12 +703,10 @@ scoreCircle.clear()
 scoreCircle.show()
 digitsClear()
 colorReads = [0, 0]
-let backgroundColor = 187
+backgroundColor = 187
 pins.digitalWritePin(DigitalPin.P5, 0)
 Connected.oledClear()
-Connected.showUserText(2, "hi")
-basic.pause(5000)
-pins.digitalWritePin(DigitalPin.P5, 1)
+Connected.showUserText(2, "goodbye, Daisy")
 runIntro()
 loops.everyInterval(250, function () {
     thisRead = notLegos.potRead()
