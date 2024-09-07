@@ -996,8 +996,8 @@ namespace Connected {
     //% distance_unit.fieldOptions.columns=2
     //% subcategory=Sensor group="Digital" color=#EA5532
     export function ultrasoundSensor(Rjpin: DigitalRJPin, distance_unit: Distance_Unit_List): number {
-        let pinT = DigitalPin.P3
-        let pinE = DigitalPin.P4
+        let pinT = DigitalPin.P8
+        let pinE = DigitalPin.P9
         switch (Rjpin) {
             case DigitalRJPin.J1:
                 pinT = DigitalPin.P1
