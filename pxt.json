@@ -12,7 +12,8 @@
         "README.md",
         "notLegos.ts",
         "display.ts",
-        "planetXbasics.ts"
+        "planetXbasics.ts",
+        "displaySendBuffer.asm"
     ],
     "testFiles": [
         "test.ts"
