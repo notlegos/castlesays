@@ -5,31 +5,34 @@ function digitsClear () {
 function awaitPlayer () {
     radioSay("Intro", "30", true)
     Connected.showUserNumber(3, Connected.readColor())
-    while (excelString == "") {
+    while (thePlayer == "") {
         thisColor = Math.round(Connected.readColor())
         colorReads.push(thisColor)
         if (thisColor == colorReads.removeAt(0)) {
-            if (isNearly(167, thisColor, 3)) {
-                Connected.showUserText(5, "" + thisColor + " green")
-                excelString = ""
-            } else if (isNearly(43, thisColor, 3)) {
-                Connected.showUserText(5, "" + thisColor + " yellow")
-            } else if (isNearly(176, thisColor, 3)) {
-                Connected.showUserText(5, "" + thisColor + " blue")
-            } else if (isNearly(331, thisColor, 3)) {
-                Connected.showUserText(5, "" + thisColor + " red")
-            } else if (isNearly(331, thisColor, 3)) {
-                Connected.showUserText(5, "" + thisColor + " pink")
-            } else if (isNearly(143, thisColor, 3)) {
-                Connected.showUserText(5, "" + thisColor + " gray")
+            if (isNearly(96.5, thisColor, 1)) {
+                Connected.showUserText(5, "" + thisColor + "red")
+                thePlayer = "Mario"
+            } else if (isNearly(98, thisColor, 1)) {
+                Connected.showUserText(5, "" + thisColor + "tan")
+                thePlayer = "Wario"
+            } else if (isNearly(135, thisColor, 0.5)) {
+                Connected.showUserText(5, "" + thisColor + "green")
+                thePlayer = "Luigi"
+            } else if (isNearly(72, thisColor, 1)) {
+                Connected.showUserText(5, "" + thisColor + "pink")
+                thePlayer = "Princess"
+            } else if (isNearly(133.5, thisColor, 1)) {
+                Connected.showUserText(5, "" + thisColor + "brown")
+                thePlayer = "Toad"
             }
         }
         basic.pause(300)
     }
     readyInstructions = false
-    thePlayer = excelString
+    thePlayer = thePlayer
     Connected.showUserText(4, thePlayer)
     radioSay("Intro", "31", true)
+    basic.pause(1000)
     startGame()
 }
 function isNearly (reference: number, reading: number, tolerance: number) {
@@ -85,19 +88,22 @@ function tryFinalRow (startPosition: string, minePosition: string) {
     return winner
 }
 function runIntro () {
+    pins.digitalWritePin(DigitalPin.P5, 1)
+    radioSay("Intro", "0", true)
+    basic.pause(500)
     theIntro = notLegos.getSoundString("Music", "Intro")
     introLength = parseFloat(theIntro.split("_")[3]) * 1000
     radioSay("Intro", convertToText(introLength), true)
     basic.pause(notLegos.playsFor(theIntro))
-    radioSay("Intro", "0", true)
-    basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "0")))
     radioSay("Intro", "1", true)
-    basic.pause(400)
+    basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "0")))
     if (checkNoPlayer()) {
         radioSay("Intro", "2", true)
+        basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "1")))
     }
     if (checkNoPlayer()) {
         radioSay("Intro", "3", true)
+        basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "2")))
         readyInstructions = true
     }
     radioSay("Intro", "4", true)
@@ -158,22 +164,28 @@ function runInstructions () {
     introGo = true
     readyInstructions = false
     if (checkNoPlayer()) {
+        radioSay("Intro", "5", true)
+        basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "5")))
+    }
+    if (checkNoPlayer()) {
         radioSay("Intro", "6", true)
+        basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "6")))
     }
     if (checkNoPlayer()) {
         radioSay("Intro", "7", true)
+        basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "7")))
     }
     if (checkNoPlayer()) {
         radioSay("Intro", "8", true)
+        basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "8")))
     }
     if (checkNoPlayer()) {
         radioSay("Intro", "9", true)
+        basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "9")))
     }
     if (checkNoPlayer()) {
         radioSay("Intro", "10", true)
-    }
-    if (checkNoPlayer()) {
-        radioSay("Intro", "11", true)
+        basic.pause(Math.min(0, notLegos.playsFor(notLegos.getSoundString("Voice", "10"))))
         digits = Connected.tm1637Create(Connected.DigitalRJPin.J5)
         for (let index4 = 0; index4 <= 4; index4++) {
             digits.showNumber(index4)
@@ -190,7 +202,8 @@ function runInstructions () {
         basic.pause(1300)
     }
     if (checkNoPlayer()) {
-        radioSay("Intro", "12", true)
+        radioSay("Intro", "11", true)
+        basic.pause(Math.min(0, notLegos.playsFor(notLegos.getSoundString("Voice", "11"))))
         scoreCircle.clear()
         scoreCircle.setPixelColor(0, Connected.colors(Connected.NeoPixelColors.Red))
         scoreCircle.setPixelColor(1, theOrange)
@@ -207,27 +220,32 @@ function runInstructions () {
         basic.pause(200)
     }
     if (checkNoPlayer()) {
-        radioSay("Intro", "13", true)
+        radioSay("Intro", "12", true)
         scoreCircle.setPixelColor(4, Connected.colors(Connected.NeoPixelColors.Green))
         scoreCircle.show()
+        basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "12")))
+    }
+    if (checkNoPlayer()) {
+        radioSay("Intro", "13", true)
+        scoreCircle.setPixelColor(5, theYellow)
+        scoreCircle.show()
+        basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "13")))
     }
     if (checkNoPlayer()) {
         radioSay("Intro", "14", true)
-        scoreCircle.setPixelColor(5, theYellow)
+        scoreCircle.setPixelColor(6, theOrange)
         scoreCircle.show()
+        basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "14")))
     }
     if (checkNoPlayer()) {
         radioSay("Intro", "15", true)
-        scoreCircle.setPixelColor(6, theOrange)
+        scoreCircle.setPixelColor(7, Connected.colors(Connected.NeoPixelColors.Red))
         scoreCircle.show()
+        basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "15")))
     }
     if (checkNoPlayer()) {
         radioSay("Intro", "16", true)
-        scoreCircle.setPixelColor(7, Connected.colors(Connected.NeoPixelColors.Red))
-        scoreCircle.show()
-    }
-    if (checkNoPlayer()) {
-        radioSay("Intro", "17", true)
+        basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "16")))
         scoreCircle.showColor(Connected.colors(Connected.NeoPixelColors.Red))
         scoreCircle.show()
         basic.pause(2700)
@@ -235,13 +253,21 @@ function runInstructions () {
         scoreCircle.show()
     }
     if (checkNoPlayer()) {
-        radioSay("Intro", "18", true)
+        radioSay("Intro", "17", true)
+        basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "17")))
     }
     if (checkNoPlayer()) {
-        radioSay("Intro", "19", true)
+        radioSay("Intro", "18", true)
+        basic.pause(notLegos.playsFor(notLegos.getSoundString("Voice", "18")))
         readyInstructions = true
     }
-    radioSay("Intro", "20", true)
+    radioSay("Intro", "19", true)
+}
+function readColor () {
+    while (true) {
+        Connected.showUserNumber(5, Connected.readColor())
+        basic.pause(100)
+    }
 }
 function printArray (toPrint: any[]) {
     lineCount = toPrint.length
@@ -418,10 +444,6 @@ function wonSequence (fieldScores: any[]) {
     radioSay("Won", "7", true)
     basic.pause(2000)
     radioSay("Won", "8", true)
-    basic.pause(2000)
-    radioSay("Won", "9", true)
-    basic.pause(2000)
-    radioSay("Won", "10", true)
 }
 function shuffleList (listIn: string[]) {
     listOut2 = ["temp"]
@@ -525,8 +547,8 @@ function runField (theMines: string) {
     return tries
 }
 function laserScan () {
-    laserL = pins.analogReadPin(AnalogPin.P0)
-    laserR = pins.analogReadPin(AnalogReadWritePin.P1)
+    laserL = pins.analogReadPin(AnalogReadWritePin.P1)
+    laserR = pins.analogReadPin(AnalogReadWritePin.P0)
     laserC = pins.analogReadPin(AnalogReadWritePin.P2)
     if (debug) {
         Connected.showUserText(8, "L" + laserL + ("C" + laserC) + ("R" + laserR))
@@ -557,10 +579,6 @@ function lostSequence (fieldScores: any[]) {
     radioSay("Lost", "7", true)
     basic.pause(2000)
     radioSay("Lost", "8", true)
-    basic.pause(2000)
-    radioSay("Lost", "9", true)
-    basic.pause(2000)
-    radioSay("Lost", "10", true)
 }
 Connected.onGesture(Connected.GestureType.Right, function () {
     Connected.showUserText(2, "gesture right")
@@ -597,7 +615,7 @@ Connected.onGesture(Connected.GestureType.Down, function () {
 })
 function checkNoPlayer () {
     Connected.showUserNumber(3, Connected.readColor())
-    return isNearly(backgroundColor, Math.round(Connected.readColor()), 3)
+    return isNearly(backgroundColor, Math.round(Connected.readColor()), 1)
 }
 let lastRead = 0
 let thisRead = 0
@@ -641,10 +659,9 @@ let endCountdown = 0
 let beginCountdown = 0
 let thisPosition = ""
 let finalRowCountdown = 0
-let thePlayer = ""
 let readyInstructions = false
 let thisColor = 0
-let excelString = ""
+let thePlayer = ""
 let digits: Connected.TM1637LEDs = null
 let backgroundColor = 0
 let colorReads: number[] = []
@@ -671,16 +688,13 @@ let introRunning = false
 let fieldIndex2 = 0
 let theSeries = ""
 let soundToPlay = ""
-let relativeVolumeA = 0
 let musicToPlay = ""
-let relativeVolumeB = 0
 let laserBreaks: number[] = []
 let thisFolder = ""
 let thisFile = ""
 let thisVolume = ""
 let thisLength = ""
 let minefields: number[] = []
-let thePotSays = 0
 let masterAvoidList: number[] = []
 let listOut: number[] = []
 notLegos.potSet(AnalogPin.P10)
@@ -689,9 +703,9 @@ notLegos.mp3setPorts(SerialPin.P15)
 notLegos.mp3setPorts(SerialPin.P16)
 notLegos.setSounds("Mario")
 btToken = "KC$"
-limitC = 70
+limitC = 80
 limitR = 80
-limitL = 80
+limitL = 90
 debug = true
 let awaitingPlayer = true
 let btGroup = 171
@@ -703,11 +717,16 @@ scoreCircle.clear()
 scoreCircle.show()
 digitsClear()
 colorReads = [0, 0]
-backgroundColor = 187
-pins.digitalWritePin(DigitalPin.P5, 0)
+backgroundColor = 136
 Connected.oledClear()
-Connected.showUserText(2, "goodbye, Daisy")
+for (let index = 0; index < 0; index++) {
+    readColor()
+}
 runIntro()
+awaitPlayer()
+for (let index = 0; index < 0; index++) {
+    runInstructions()
+}
 loops.everyInterval(250, function () {
     thisRead = notLegos.potRead()
     if (!(isNearly(lastRead, thisRead, 0.005))) {

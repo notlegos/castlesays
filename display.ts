@@ -600,8 +600,8 @@ namespace Connected {
                 display.dio = DigitalPin.P16
                 break;
             case DigitalRJPin.J5:
-                display.clk = DigitalPin.P6
-                display.dio = DigitalPin.P7
+                display.clk = DigitalPin.P7
+                display.dio = DigitalPin.P6
                 break;
         }
         if ((count < 1) || (count > 5)) count = 4;
